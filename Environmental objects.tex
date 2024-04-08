@@ -1,0 +1,264 @@
+\documentclass{egpubl}
+\usepackage{sca2024}
+
+% --- for  Annual CONFERENCE
+% \ConferenceSubmission   % uncomment for Conference submission
+% \ConferencePaper        % uncomment for (final) Conference Paper
+% \STAR                   % uncomment for STAR contribution
+% \Tutorial               % uncomment for Tutorial contribution
+% \ShortPresentation      % uncomment for (final) Short Conference Presentation
+% \Areas                  % uncomment for Areas contribution
+% \Education              % uncomment for Education contribution
+% \Poster                 % uncomment for Poster contribution
+% \DC                     % uncomment for Doctoral Consortium
+%
+% --- for  CGF Journal
+% \JournalSubmission    % uncomment for submission to Computer Graphics Forum
+% \JournalPaper         % uncomment for final version of Journal Paper
+%
+% --- for  CGF Journal: special issue
+\SpecialIssueSubmission    % uncomment for submission to , special issue
+% \SpecialIssuePaper         % uncomment for final version of Computer Graphics Forum, special issue
+%                          % EuroVis, SGP, Rendering, PG
+% --- for  EG Workshop Proceedings
+% \WsSubmission      % uncomment for submission to EG Workshop
+% \WsPaper           % uncomment for final version of EG Workshop contribution
+% \WsSubmissionJoint % for joint events, for example ICAT-EGVE
+% \WsPaperJoint      % for joint events, for example ICAT-EGVE
+% \WsPaperJointdemo         % uncomment for final version of EG Workshop contribution
+% \WsPaperJointposter         % uncomment for final version of EG Workshop contribution 
+% \WsPoster          % uncomment for Poster contribution
+% \WsShortPaper      % uncomment for Short Paper contribution
+% \Expressive        % for SBIM, CAe, NPAR
+% \DigitalHeritagePaper
+% \PaperL2P          % for events EG only asks for License to Publish
+
+% --- for EuroVis 
+% for full papers use \SpecialIssuePaper
+% \STAREurovis   % for EuroVis additional material 
+% \EuroVisPoster % for EuroVis additional material 
+% \EuroVisShort  % for EuroVis additional material
+% \MedicalPrize  % uncomment for Medical Prize (Dirk Bartz) contribution, since 2021 part of EuroVis
+% \EuroVisEducation              % uncomment for Education contribution
+
+% Licences: for CGF Journal (EG conf. full papers and STARs, EuroVis conf. full papers and STARs, SR, SGP, PG)
+% please choose the correct license
+%\CGFStandardLicense
+\CGFccby
+
+% !! *please* don't change anything above
+% !! unless you REALLY know what you are doing
+% ------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage{dfadobe}  
+
+%\usepackage{cite}  % comment out for biblatex with backend=biber
+% ---------------------------
+%\biberVersion
+\BibtexOrBiblatex
+%\usepackage[backend=biber,bibstyle=EG,citestyle=alphabetic,backref=true]{biblatex} 
+%\addbibresource{egbibsample.bib}
+% ---------------------------  
+%\electronicVersion
+\PrintedOrElectronic
+\ifpdf \usepackage[pdftex]{graphicx} \pdfcompresslevel=9
+\else \usepackage[dvips]{graphicx} \fi
+
+\usepackage{egweblnk} 
+% end of prologue
+% ---------------------------------------------------------------------
+% EG author guidelines plus sample file for EG publication using LaTeX2e input
+% D.Fellner, v2.04, Dec 14, 2023
+
+
+\title[Underwater terrain generation]%
+{Underwater terrain generation using Cellular Automata}
+
+% for anonymous conference submission please enter your SUBMISSION ID
+% instead of the author's name (and leave the affiliation blank) !!
+% for final version: please provide your *own* ORCID in the brackets following \orcid; see https://orcid.org/ for more details.
+\author[]{}
+%\author
+%{\parbox{\textwidth}{\centering D.\,W. Fellner\thanks{Chairman Eurographics Publications Board}$^{1,2}$\orcid{0000-0001-7756-0901}
+%		and S. Behnke$^{2}$\orcid{0000-0001-5923-423X} 
+%		%        S. Spencer$^2$\thanks{Chairman Siggraph Publications Board}
+%	}
+%	\\
+%	% For Computer Graphics Forum: Please use the abbreviation of your first name.
+%	{\parbox{\textwidth}{\centering $^1$TU Darmstadt \& Fraunhofer IGD, Germany\\
+%			$^2$Graz University of Technology, Institute of Computer Graphics and Knowledge Visualization, Austria
+%			%        $^2$ Another Department to illustrate the use in papers from authors
+%			%             with different affiliations
+%		}
+%	}
+%}
+% ------------------------------------------------------------------------
+
+% if the Editors-in-Chief have given you the data, you may uncomment
+% the following five lines and insert it here
+%
+% \volume{36}   % the volume in which the issue will be published;
+% \issue{1}     % the issue number of the publication
+% \pStartPage{1}      % set starting page
+
+
+%-------------------------------------------------------------------------
+
+
+
+\newcommand{\material}{\mathcal{M}}
+\newcommand{\point}[1]{\vec{#1}}
+
+\begin{document}
+% uncomment for using teaser
+% \teaser{
+	%  \includegraphics[width=0.9\linewidth]{eg_new}
+	%  \centering
+	%   \caption{New EG Logo}
+	% \label{fig:teaser}
+	%}
+
+\maketitle
+%-------------------------------------------------------------------------
+¨\begin{abstract}
+	In this paper we present a novel method to generate underwater landscapes adaptable for large and small scale terrains by using a accumulative generation. The creation and evolution of elements of the terrain is managed by the use of environmental objects.
+	%-------------------------------------------------------------------------
+	%  https://www.acm.org/publications/class-2012 can be used to generate CCS codes.
+	%Example:
+	\begin{CCSXML}
+		<ccs2012>
+		<concept>
+		<concept_id>10010147.10010371.10010352.10010381</concept_id>
+		<concept_desc>Computing methodologies~Collision detection</concept_desc>
+		<concept_significance>300</concept_significance>
+		</concept>
+		<concept>
+		<concept_id>10010583.10010588.10010559</concept_id>
+		<concept_desc>Hardware~Sensors and actuators</concept_desc>
+		<concept_significance>300</concept_significance>
+		</concept>
+		<concept>
+		<concept_id>10010583.10010584.10010587</concept_id>
+		<concept_desc>Hardware~PCB design and layout</concept_desc>
+		<concept_significance>100</concept_significance>
+		</concept>
+		</ccs2012>
+	\end{CCSXML}
+	
+	\ccsdesc[300]{Computing methodologies~Collision detection}
+	\ccsdesc[300]{Hardware~Sensors and actuators}
+	\ccsdesc[100]{Hardware~PCB design and layout}
+	
+	
+	\printccsdesc   
+\end{abstract}  
+
+
+\section{Introduction}
+- Terrain generation \\ 
+Automated terrain generation is a key component of natural scene digital modeling for animated movies and video games. 
+
+- Absence of underwater generation \\
+Underwater scenes are rarely created in these media for multiple reasons: these environments are not completely understood and mastered as much as land environments because they are difficult to access, we lack the capacity to see them at a larger scale (unlike mountains for example) and the underlying process that forms these landscapes are much more complex to simulate [REF TERRESTRIAL SIMULATION / UNDERWATER SIMULATION].
+
+These limitations cause animated movies and video games studios to avoid as much as possible underwater environments. 
+
+- Needs for robotics and biology \\
+However, these environments are important for the study of biology, geology, and, by extension, robotics. Due to the complexity of an underwater human expedition, autonomous underwater vehicles (AUV) begins to be used for these studies. Validation of the navigation systems require simulations, but roboticians are lacking the capacity to test the robot's algorithms on realistic virtual scenes, and so only test them on synthetic scenarios that do not correlate with real world terrains.
+
+- Lack of multi-scale models \\
+The difficulties to visualize and study the underwater environments on a large scale at the same time as the small scale is an obstacle to the generation and simulation of scenes that are coherent in these two different scales.
+
+- Long time for simulations \\
+A solution to this problem is to simulate at the smallest scale the behaviour of all the elements of the environment. Computing such a simulation in order to generate a full island is an impossible task due to time and memory complexity. The method we propose provides a way to generate environments on multiple scales without introducing such complexity by using a sparse representation of the environment using environmental objects combined with cellular automata to link all the elements of the terrain together.
+
+- Objects definition \\
+
+
+\section{Related works}
+- Landscape generation \\
+- Ecosystem generation \\
+- Underwater generation \\
+- Environmental objects \cite{Grosbellet2016b} \\ 
+- Aerodynamic animation \cite{Wejchert1991} \\
+
+
+\section{Method}
+The overall pipeline of the method is based on simple incremental generation [FIND REF USING THIS PIPELINE].
+
+\subsection{Pipeline}
+- Initial terrain \\
+The generation of the terrain is initialized using an initial height field. Different materials can be defined, including properties such as the diffusion speed, the mass, the damping factor [and the influence from the water currents]. Finally, a list of environmental objects are provided with their properties: type, size, generation rules, growing conditions, absorption and deposition rate and effects on the water currents.
+
+
+- Generation loop \\
+The generation is incremental and the main loop is composed of two different steps: the instantiation of objects and the update of the environment.
+
+- Object instantiation \\
+At each time step, an element of the terrain is created at its most fitting location. [STILL NEED TO FIND HOW TO CHOOSE THE GOOD OBJECT]. Once the best fitted object is instantiated at the best fitted location, the process can continue.
+	
+- Environment update \\
+At each time step, the environment's properties are updated using a simple cellular automaton. We consider the materials available in the terrain to . Taking into account the water currents and the heightmap's slope, the material is displaced using a distorsion field $D_\material$ defined as:
+$$
+D_\material = \left( W \cdot W_\material + \Delta h \cdot m_\material \right) dt
+$$
+with $W$ the water velocity, $W_\material$ the influence of water on the material $\material$, $\Delta h$ the slope of the terrain and $m_\material$ the mass of material.
+
+- Output result
+
+
+\subsection{Environmental objects}
+\subsubsection{Generation rules}
+Generation rules provides a cost function defining the best location for an object to spawn. Cost function's parameters contains, for every point $\point{p}$ the location to closest objects, the amout of material available and the velocity of the water currents. 
+Additional information about surrounding objects are the curvature and the signed distance from the curve defining curve- and area-based objects, and start and end points of the curve-based objects.
+
+\subsubsection{Point, curve and area generation}
+The seed point of a spawning object is defined by a stochastic process by selecting multiple candiate points in the plane. The gradient of the cost function is used to move the candidates a few iterations; the candidate pinning to a location with maximal score is kept as a seed [MAYBE KEEP AND EXTEND THAT, OR REMOVE ENTIRELY]. For a point-based object, this is all. For a curve- or region-based objects, we need to define the curve that will define it. 
+Region-based objects are defined by the isolevel on which the seed point is pointing.
+Curve-based objects are defined by a starting point $S$ and ending point $E$ defined at $(S, E) = \left(\point{p} - \frac{1}{2}\frac{l \nabla f(\point{p})}{||\nabla f(\point{p})||}, \point{p} + \frac{1}{2}\frac{l \nabla f(\point{p})}{||\nabla f(\point{p})||} \right)$  with $l$ the optimal length of the curve.
+
+\subsection{Communication between objects and environment}
+\subsubsection{Water currents}
+- Definition and approximation of currents \\
+- Modification of the currents \\
+
+\subsubsection{Environment materials}
+- Material deposition \\
+- Material dispersion \\
+- Interaction between materials \\
+- Interaction with terrain surface \\
+
+
+\section{Results}
+\subsection{Small-scale}
+- Coral colonies fighting \\
+
+\subsection{Mid-scale}
+- Canyon scene \\
+
+\subsection{Large-scale}
+- Coral island scene\\
+
+
+
+\section{Discussion}
+- Limits \\
+
+- Future \\
+We limited our work to the use of height fields as they are more easily interpretable and more light. However, we want to continue this work by using 3D representations of the terrain and the environment. The different possibilities to explore for this would be: the use of 3D particles to represent the state of the materials in the environment, or voxel grids or flatten representation of the terrain's surface (but would not allow a different morphological shape than the heightfield...).
+
+In this work we simplify and consider the physics and the exchanges between the objects such that at each generation step the system is in a stable state. While this is wrong in regard to the dynamic system of an ecosystem, we consider that the advantage of this assumption is sufficient. Since we suppose a stable system, we could reduce the complexity of our generation by removing the material motion and represent the problem in a form of an oriented spatialized graph. Each node of the graph represent objects and each oriented edge is a material exchange. Using the analytic form of the water current representation, we do not need to use any simulation steps anymore. 
+More indepth studies could be done in this direction to achieve multi-scale underwater generation without computation overhead.
+
+\section{Conclusion}
+
+\def\url#1{} % This line actually remove the "URL" from the references
+
+% bibtex
+\bibliographystyle{eg-alpha-doi}
+\bibliography{references_terrain}
+
+% biblatex with biber
+% \printbibliography
+
+\end{document}
