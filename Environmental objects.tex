@@ -107,7 +107,6 @@
 
 
 \newcommand{\material}{\mathcal{M}}
-\newcommand{\point}[1]{\vec{#1}}
 
 \begin{document}
 % uncomment for using teaser
@@ -120,7 +119,7 @@
 
 \maketitle
 %-------------------------------------------------------------------------
-¨\begin{abstract}
+\begin{abstract}
 	In this paper we present a novel method to generate underwater landscapes adaptable for large and small scale terrains by using a accumulative generation. The creation and evolution of elements of the terrain is managed by the use of environmental objects.
 	%-------------------------------------------------------------------------
 	%  https://www.acm.org/publications/class-2012 can be used to generate CCS codes.
@@ -156,7 +155,9 @@
 
 \section{Introduction}
 - Terrain generation \\ 
-Automated terrain generation is a key component of natural scene digital modeling for animated movies and video games. 
+Automated terrain generation is a key component of natural scene digital modeling for animated movies and video games. Many landscapes have been studied and are synthetised with more and more realism. 
+Different processes can be used and combined to achieve these scenes: fractal terrains, erosion simulation, hand modeling, geological simulation, ... [REFS] The high quality of synthesis for such environment is due to the possibility to observe these environments form many point of views: long-distance gazing, hiking on mountains, remote sensing, aerial imaging, ... [REFS?]. 
+Thanks to the quality of the digital modeling, the entertainment industry display often breathtaking land scenes.
 
 - Absence of underwater generation \\
 Underwater scenes are rarely created in these media for multiple reasons: these environments are not completely understood and mastered as much as land environments because they are difficult to access, we lack the capacity to see them at a larger scale (unlike mountains for example) and the underlying process that forms these landscapes are much more complex to simulate [REF TERRESTRIAL SIMULATION / UNDERWATER SIMULATION].
@@ -170,16 +171,27 @@ However, these environments are important for the study of biology, geology, and
 The difficulties to visualize and study the underwater environments on a large scale at the same time as the small scale is an obstacle to the generation and simulation of scenes that are coherent in these two different scales.
 
 - Long time for simulations \\
-A solution to this problem is to simulate at the smallest scale the behaviour of all the elements of the environment. Computing such a simulation in order to generate a full island is an impossible task due to time and memory complexity. The method we propose provides a way to generate environments on multiple scales without introducing such complexity by using a sparse representation of the environment using environmental objects combined with cellular automata to link all the elements of the terrain together.
+A solution to this problem is to simulate at the smallest scale the behaviour of all the elements of the environment. Computing such a simulation in order to generate a full island is an impossible task due to time and memory complexity. 
 
 - Objects definition \\
+The method we propose provides a way to generate environments on multiple scales without introducing such complexity by using a sparse representation of the environment using environmental objects combined with cellular automata to link all the elements of the terrain together.
+The environmental objects only have access to local properties of the environments to spawn, grow and die. The use of local interaction with global properties removes the need for complex interconnections between all elements of the terrain, providing a parallelisable generation process at large to small scales.
+Defining objects of the terrain as parametric models based on point, curve or region skeletons provides a lightweight representation of the terrain.
+Our method does not aim for a visually realistic generation, but for a geological plausible terrain. Using state of the art modeling of the geometry of the elements of the terrain could achieve realistic results.
 
 
 \section{Related works}
-- Landscape generation \\
-- Ecosystem generation \\
-- Underwater generation \\
-- Environmental objects \cite{Grosbellet2016b} \\ 
+- Landscape generation \cite{Galin2019} \\
+-- Blabla fractal terrains \cite{Musgrave1989} \\
+-- Blabla data driven \cite{Kapp2020} / learning \cite{Brosz2007} / Markov chain \\
+-- Blabla erosion simulation \cite{Cordonnier2023, Schott2023a, Paris2019b, ...} \\
+-- Blabla subsurface geology \cite{Patel2021} / tectonic simulation \cite{Cortial2019, Michel2016} \\
+-- Blabla sketch based \cite{Guerin2017, Talgorn2018} \\
+
+- Cellular automata \\
+
+- Environmental objects \cite{Grosbellet2016, Guerin2016a} \\ 
+
 - Aerodynamic animation \cite{Wejchert1991} \\
 
 
@@ -204,18 +216,20 @@ D_\material = \left( W \cdot W_\material + \Delta h \cdot m_\material \right) dt
 $$
 with $W$ the water velocity, $W_\material$ the influence of water on the material $\material$, $\Delta h$ the slope of the terrain and $m_\material$ the mass of material.
 
+The amount of material at each point $p$ 
+
 - Output result
 
 
 \subsection{Environmental objects}
 \subsubsection{Generation rules}
-Generation rules provides a cost function defining the best location for an object to spawn. Cost function's parameters contains, for every point $\point{p}$ the location to closest objects, the amout of material available and the velocity of the water currents. 
+Generation rules provides a cost function defining the best location for an object to spawn. Cost function's parameters contains, for every point $p$ the location to closest objects, the amout of material available and the velocity of the water currents. 
 Additional information about surrounding objects are the curvature and the signed distance from the curve defining curve- and area-based objects, and start and end points of the curve-based objects.
 
 \subsubsection{Point, curve and area generation}
 The seed point of a spawning object is defined by a stochastic process by selecting multiple candiate points in the plane. The gradient of the cost function is used to move the candidates a few iterations; the candidate pinning to a location with maximal score is kept as a seed [MAYBE KEEP AND EXTEND THAT, OR REMOVE ENTIRELY]. For a point-based object, this is all. For a curve- or region-based objects, we need to define the curve that will define it. 
 Region-based objects are defined by the isolevel on which the seed point is pointing.
-Curve-based objects are defined by a starting point $S$ and ending point $E$ defined at $(S, E) = \left(\point{p} - \frac{1}{2}\frac{l \nabla f(\point{p})}{||\nabla f(\point{p})||}, \point{p} + \frac{1}{2}\frac{l \nabla f(\point{p})}{||\nabla f(\point{p})||} \right)$  with $l$ the optimal length of the curve.
+Curve-based objects are defined by a starting point $S$ and ending point $E$ defined at $(S, E) = \left(p - \frac{1}{2}\frac{l \nabla f(p)}{||\nabla f(p)||}, p + \frac{1}{2}\frac{l \nabla f(p)}{||\nabla f(p)||} \right)$  with $l$ the optimal length of the curve.
 
 \subsection{Communication between objects and environment}
 \subsubsection{Water currents}
@@ -256,7 +270,7 @@ More indepth studies could be done in this direction to achieve multi-scale unde
 
 % bibtex
 \bibliographystyle{eg-alpha-doi}
-\bibliography{references_terrain}
+\bibliography{references_terrain2}
 
 % biblatex with biber
 % \printbibliography
